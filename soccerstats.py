@@ -9,7 +9,7 @@ from selenium.webdriver.common.by import By
 import time
 
 # Importando e inicializando o driver do Chrome
-s = Service("C:/Users/Marco/Downloads/chromedriver-win64/chromedriver.exe")
+s = Service("chromedriver.exe")
 driver = webdriver.Chrome(service=s)
 
 # Estrutura padrão de link para acessar as estatísticas de gols das ligas no Soccerstats
