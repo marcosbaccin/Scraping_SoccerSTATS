@@ -168,27 +168,27 @@ try:
 except:
     print("Sem anúncio")
 
-Teams_home = []
+Teams_home_ht = []
 One_goal_ht_home = []
 
 # Selecionando a tabela onde estão as informações necessárias (nome dos times e % de gols no 1º tempo)
-teams_home = driver.find_elements(By.XPATH, "/html/body/div[5]/div[2]/div[2]/div[4]/div[3]/div[2]/div[2]/table/tbody/tr")
-if len(teams_home) == 0:
-    teams_home = driver.find_elements(By.XPATH, "/html/body/div[4]/div/div[2]/div[4]/div[2]/div[2]/div[2]/table/tbody/tr")
+teams_home_ht = driver.find_elements(By.XPATH, "/html/body/div[5]/div[2]/div[2]/div[4]/div[3]/div[2]/div[2]/table/tbody/tr")
+if len(teams_home_ht) == 0:
+    teams_home_ht = driver.find_elements(By.XPATH, "/html/body/div[4]/div/div[2]/div[4]/div[2]/div[2]/div[2]/table/tbody/tr")
 
 # Pegando as informações
 index_gh = 1
-for team_h in teams_home:
-    t = team_h.find_element(By.TAG_NAME, "a").get_attribute("innerHTML")
+for team_h_ht in teams_home_ht:
+    t = team_h_ht.find_element(By.TAG_NAME, "a").get_attribute("innerHTML")
 
     try:
-        g = team_h.find_element(By.XPATH, f"/html/body/div[5]/div[2]/div[2]/div[4]/div[3]/div[2]/div[2]/table/tbody/tr[{index_gh}]/td[4]/span").get_attribute("innerHTML")
+        g = team_h_ht.find_element(By.XPATH, f"/html/body/div[5]/div[2]/div[2]/div[4]/div[3]/div[2]/div[2]/table/tbody/tr[{index_gh}]/td[4]/span").get_attribute("innerHTML")
     except:
-        g = team_h.find_element(By.XPATH, f"/html/body/div[4]/div/div[2]/div[4]/div[2]/div[2]/div[2]/table/tbody/tr[{index_gh}]/td[4]/span").get_attribute("innerHTML")
+        g = team_h_ht.find_element(By.XPATH, f"/html/body/div[4]/div/div[2]/div[4]/div[2]/div[2]/div[2]/table/tbody/tr[{index_gh}]/td[4]/span").get_attribute("innerHTML")
 
     index_gh += 1
     g = int(g.replace("%", ""))
-    Teams_home.append(t)
+    Teams_home_ht.append(t)
     One_goal_ht_home.append(g)
 
 # print(Teams_home)
@@ -196,25 +196,25 @@ for team_h in teams_home:
 # print(One_goal_ht_home)
 # print(len(One_goal_ht_home))
 
-Teams_away = []
+Teams_away_ht = []
 One_goal_ht_away = []
 
-teams_away = driver.find_elements(By.XPATH, "/html/body/div[5]/div[2]/div[2]/div[4]/div[3]/div[2]/div[3]/table/tbody/tr")
-if len(teams_away) == 0:
-    teams_away = driver.find_elements(By.XPATH, "/html/body/div[4]/div/div[2]/div[4]/div[2]/div[2]/div[3]/table/tbody/tr")
+teams_away_ht = driver.find_elements(By.XPATH, "/html/body/div[5]/div[2]/div[2]/div[4]/div[3]/div[2]/div[3]/table/tbody/tr")
+if len(teams_away_ht) == 0:
+    teams_away_ht = driver.find_elements(By.XPATH, "/html/body/div[4]/div/div[2]/div[4]/div[2]/div[2]/div[3]/table/tbody/tr")
 
 index_gw = 1
-for team_a in teams_away:
-    t = team_a.find_element(By.TAG_NAME, "a").get_attribute("innerHTML")
+for team_a_ht in teams_away_ht:
+    t = team_a_ht.find_element(By.TAG_NAME, "a").get_attribute("innerHTML")
 
     try:
-        g = team_a.find_element(By.XPATH, f"/html/body/div[5]/div[2]/div[2]/div[4]/div[3]/div[2]/div[3]/table/tbody/tr[{index_gw}]/td[4]/span").get_attribute("innerHTML")
+        g = team_a_ht.find_element(By.XPATH, f"/html/body/div[5]/div[2]/div[2]/div[4]/div[3]/div[2]/div[3]/table/tbody/tr[{index_gw}]/td[4]/span").get_attribute("innerHTML")
     except:
-        g = team_a.find_element(By.XPATH, f"/html/body/div[4]/div/div[2]/div[4]/div[2]/div[2]/div[3]/table/tbody/tr[{index_gw}]/td[4]/span").get_attribute("innerHTML")
+        g = team_a_ht.find_element(By.XPATH, f"/html/body/div[4]/div/div[2]/div[4]/div[2]/div[2]/div[3]/table/tbody/tr[{index_gw}]/td[4]/span").get_attribute("innerHTML")
 
     index_gw += 1
     g = int(g.replace("%", ""))
-    Teams_away.append(t)
+    Teams_away_ht.append(t)
     One_goal_ht_away.append(g)
 
 # print(Teams_away)
@@ -222,18 +222,90 @@ for team_a in teams_away:
 # print(One_goal_ht_away)
 # print(len(One_goal_ht_away))
 
+Teams_home = []
+More_2_goals_home = []
+Both_teams_to_score_home = []
+
+# Selecionando a tabela onde estão as informações necessárias (nome dos times e % de jogos com +2.5 gols e BTTS)
+teams_home = driver.find_elements(By.XPATH, "/html/body/div[5]/div[2]/div[2]/div[4]/div[3]/div[1]/div[3]/table/tbody/tr")
+if len(teams_home) == 0:
+    teams_home = driver.find_elements(By.XPATH, "/html/body/div[4]/div/div[2]/div[4]/div[2]/div[1]/div[3]/table/tbody/tr")
+
+# Pegando as informações
+index_gh = 1
+for team_h in teams_home:
+    t = team_h.find_element(By.TAG_NAME, "a").get_attribute("innerHTML")
+
+    try:
+        m2g = team_h.find_element(By.XPATH, f"/html/body/div[5]/div[2]/div[2]/div[4]/div[3]/div[1]/div[3]/table/tbody/tr[{index_gh}]/td[6]/font/span").get_attribute("innerHTML")
+    except:
+        m2g = team_h.find_element(By.XPATH, f"/html/body/div[4]/div/div[2]/div[4]/div[2]/div[1]/div[3]/table/tbody/tr[{index_gh}]/td[6]/font/span").get_attribute("innerHTML")
+
+    try:
+        btts = team_h.find_element(By.XPATH, f"/html/body/div[5]/div[2]/div[2]/div[4]/div[3]/div[1]/div[3]/table/tbody/tr[{index_gh}]/td[10]/span").get_attribute("innerHTML")
+    except:
+        btts = team_h.find_element(By.XPATH, f"/html/body/div[4]/div/div[2]/div[4]/div[2]/div[1]/div[3]/table/tbody/tr[{index_gh}]/td[10]/span").get_attribute("innerHTML")
+
+    index_gh += 1
+    m2g = int(m2g.replace("%", ""))
+    btts = int(btts.replace("%", ""))
+    Teams_home.append(t)
+    More_2_goals_home.append(m2g)
+    Both_teams_to_score_home.append(btts)
+
+Teams_away = []
+More_2_goals_away = []
+Both_teams_to_score_away = []
+
+# Selecionando a tabela onde estão as informações necessárias (nome dos times e % de jogos com +2.5 gols e BTTS)
+teams_away = driver.find_elements(By.XPATH, "/html/body/div[5]/div[2]/div[2]/div[4]/div[3]/div[1]/div[4]/table/tbody/tr")
+if len(teams_away) == 0:
+    teams_away = driver.find_elements(By.XPATH, "/html/body/div[4]/div/div[2]/div[4]/div[2]/div[1]/div[4]/table/tbody/tr")
+
+# Pegando as informações
+index_ga = 1
+for team_a in teams_away:
+    t = team_a.find_element(By.TAG_NAME, "a").get_attribute("innerHTML")
+
+    try:
+        m2g = team_a.find_element(By.XPATH, f"/html/body/div[5]/div[2]/div[2]/div[4]/div[3]/div[1]/div[4]/table/tbody/tr[{index_ga}]/td[6]/font/span").get_attribute("innerHTML")
+    except:
+        m2g = team_a.find_element(By.XPATH, f"/html/body/div[4]/div/div[2]/div[4]/div[2]/div[1]/div[4]/table/tbody/tr[{index_ga}]/td[6]/font/span").get_attribute("innerHTML")
+
+    try:
+        btts = team_a.find_element(By.XPATH, f"/html/body/div[5]/div[2]/div[2]/div[4]/div[3]/div[1]/div[4]/table/tbody/tr[{index_ga}]/td[10]/span").get_attribute("innerHTML")
+    except:
+        btts = team_a.find_element(By.XPATH, f"/html/body/div[4]/div/div[2]/div[4]/div[2]/div[1]/div[4]/table/tbody/tr[{index_ga}]/td[10]/span").get_attribute("innerHTML")
+
+    index_ga += 1
+    m2g = int(m2g.replace("%", ""))
+    btts = int(btts.replace("%", ""))
+    Teams_away.append(t)
+    More_2_goals_away.append(m2g)
+    Both_teams_to_score_away.append(btts)
+
 # Salvando as informações em um dataframe
-df_h = pd.DataFrame({"Team Home": Teams_home, "One Goal HT home": One_goal_ht_home}, index=None)
+df_h = pd.DataFrame({"Team Home": Teams_home_ht, "One Goal HT home": One_goal_ht_home}, index=None)
 df_h.sort_values(by="Team Home", inplace=True, ignore_index=True)
 # print(df_h)
 
 # Organizando as informações
-df_a = pd.DataFrame({"Team Away": Teams_away, "One Goal HT away": One_goal_ht_away}, index=None)
+df_a = pd.DataFrame({"Team Away": Teams_away_ht, "One Goal HT away": One_goal_ht_away}, index=None)
 df_a.sort_values(by="Team Away", inplace=True, ignore_index=True)
 # print(df_a)
 
+df_h2 = pd.DataFrame({"Team Home": Teams_home, "More 2 Goals home": More_2_goals_home, "Btts home": Both_teams_to_score_home}, index=None)
+df_h2.sort_values(by="Team Home", inplace=True, ignore_index=True)
+
+df_a2 = pd.DataFrame({"Team Away": Teams_away, "More 2 Goals away": More_2_goals_away, "Btts away": Both_teams_to_score_away}, index=None)
+df_a2.sort_values(by="Team Away", inplace=True, ignore_index=True)
+
 df_h["One Goal HT away"] = df_a["One Goal HT away"]
+df_h["More 2 Goals home"] = df_h2["More 2 Goals home"]
+df_h["Btts home"] = df_h2["Btts home"]
+df_h["More 2 Goals away"] = df_a2["More 2 Goals away"]
+df_h["Btts away"] = df_a2["Btts away"]
 print(df_h)
 
 # Salvando os dados coletados em uma planilha
-df_h.to_excel(f"One_goal_ht_{leagues[league]}.xlsx", index=False)
+df_h.to_excel(f"Goals_stats_{leagues[league]}.xlsx", index=False)
