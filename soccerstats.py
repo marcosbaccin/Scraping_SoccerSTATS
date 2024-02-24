@@ -18,6 +18,7 @@ standard_link = "https://www.soccerstats.com/trends.asp?league="
 # Ligas que possuem estatísticas de 1º tempo
 leagues = [
     "southafrica",
+    "algeria",
     "albania",
     "germany",
     "germany2",
