@@ -8,8 +8,11 @@ import time
 import requests
 
 # Importando e inicializando o driver do Chrome
+chrome_options = webdriver.ChromeOptions()
+chrome_options.add_argument("--disable-animations")
+chrome_options.add_argument("--blink-settings=imagesEnabled=false")
 s = Service("chromedriver.exe")
-driver = webdriver.Chrome(service=s)
+driver = webdriver.Chrome(service=s, options=chrome_options)
 
 # Estrutura padrão de link para acessar as estatísticas de gols e próximos jogos das ligas no Soccerstats
 goals_link = "https://www.soccerstats.com/trends.asp?league="
@@ -20,9 +23,9 @@ jogos = pd.DataFrame(columns=['League', 'Date', 'Hour', 'Home', 'Away', 'Type'])
 
 # Ligas disponíveis no Soccerstats
 leagues = ['australia', 'australia2', 'australia3', 'australia4', 'australia5', 'australia6', 'australia7', 'australia8', 'australia10', 'australia11',
-           'japan', 'japan2', 'japan3', 'japan4', 'japan5', 'southkorea', 'southkorea2', 'southkorea3', 'southkorea4','china', 'china2',
+           'japan', 'japan2', 'japan3', 'japan4', 'japan5', 'southkorea', 'southkorea2', 'southkorea3', 'southkorea4', 'china', 'china2',
            'china3', 'malaysia2', 'newzealand', 'singapore', 'thailand', 'thailand2', 'vietnam', 'hongkong', 'indonesia', 'malaysia',
-           'vietnam2', 'vietnam3', 'albania', 'algeria', 'algeria3', 'andorra', 'argentina', 'argentina2', 'argentina3', 'argentina4',
+           'vietnam2', 'vietnam3','albania', 'algeria', 'algeria3', 'andorra', 'argentina', 'argentina2', 'argentina3', 'argentina4',
            'argentina5', 'argentina10', 'armenia',  'austria', 'austria2', 'austria6', 'austria7', 'austria8', 'azerbaijan', 'bahrain',
            'bangladesh', 'belarus', 'belarus2', 'belarus4', 'belgium', 'belgium2', 'belgium3', 'belgium4', 'belgium6', 'bolivia',
            'bolivia2', 'bosnia', 'bosnia2', 'brazil', 'brazil2', 'brazil3', 'brazil4', 'brazil5', 'brazil6', 'brazil7',
@@ -56,9 +59,10 @@ leagues = ['australia', 'australia2', 'australia3', 'australia4', 'australia5', 
            'uganda', 'ukraine', 'ukraine2', 'uruguay', 'uruguay2', 'uruguay3', 'usa', 'usa2', 'usa3', 'usa5',
            'uzbekistan', 'venezuela', 'wales', 'zambia', 'zimbabwe']
 
-#teste = []
+teste = ['southkorea4', 'indonesia', 'italy15', 'ukraine', 'armenia', 'mongolia', 'georgia2', 'england19', 'iraq', 'tanzania',
+         'oman', 'bulgaria2', 'egypt', 'uae2', 'serbia2', 'latvia',]
 
-for t in leagues:
+for t in teste:
     
     # Criando o link da página de gols da liga (t)
     link = goals_link + t
@@ -79,7 +83,7 @@ for t in leagues:
     if requests.get(link).status_code == 200:
 
         driver.get(link)
-        time.sleep(2)
+        #time.sleep(1)
 
         try:
             # Clicar em aceitar os cookies da página
@@ -528,7 +532,7 @@ for t in leagues:
     if requests.get(link).status_code == 200:
 
         driver.get(link)
-        time.sleep(2)
+        #time.sleep(1)
 
         # Clicar em aceitar os cookies da página
         try:
@@ -586,28 +590,28 @@ for t in leagues:
             i = 0
             for d in date:
                 # Verifica se no dia atual o mandante e o visitante estão entre os times acima de suas respectivas médias para +1.5 gols
-                if d == 'Th 18 Apr' and home[i] in mtog_teams_home and away[i] in mtog_teams_away:
+                if d == 'Mo 22 Apr' and home[i] in mtog_teams_home and away[i] in mtog_teams_away:
                     print(f'{league_name}, {d}, {hour[i]}, {home[i]} x {away[i]}, +1.5 gols')
                     
                     # Salva o jogo no Data Frame
                     jogos.loc[len(jogos)] = [league_name, d, hour[i], home[i], away[i], '+1.5 gols']
 
                 # Verifica se no dia atual o mandante e o visitante estão entre os times acima de suas respectivas médias para +2.5 gols
-                if d == 'Th 18 Apr' and home[i] in mttg_teams_home and away[i] in mttg_teams_away:
+                if d == 'Mo 22 Apr' and home[i] in mttg_teams_home and away[i] in mttg_teams_away:
                     print(f'{league_name}, {d}, {hour[i]}, {home[i]} x {away[i]}, +2.5 gols')
                     
                     # Salva o jogo no Data Frame
                     jogos.loc[len(jogos)] = [league_name, d, hour[i], home[i], away[i], '+2.5 gols']
 
                 # Verifica se no dia atual o mandante e o visitante estão entre os times acima de suas respectivas médias para BTS
-                if d == 'Th 18 Apr' and home[i] in bts_teams_home and away[i] in bts_teams_away:
+                if d == 'Mo 22 Apr' and home[i] in bts_teams_home and away[i] in bts_teams_away:
                     print(f'{league_name}, {d}, {hour[i]}, {home[i]} x {away[i]}, Ambas Marcam')
                     
                     # Salva o jogo no Data Frame
                     jogos.loc[len(jogos)] = [league_name, d, hour[i], home[i], away[i], 'Ambas Marcam']
 
                 # Verifica se no dia atual o mandante e o visitante estão entre os times acima de suas respectivas médias para +0.5 gols HT
-                if d == 'Th 18 Apr' and home[i] in oght_teams_home and away[i] in oght_teams_away:
+                if d == 'Mo 22 Apr' and home[i] in oght_teams_home and away[i] in oght_teams_away:
                     print(f'{league_name}, {d}, {hour[i]}, {home[i]} x {away[i]}, +0.5 gols HT')
                     
                     # Salva o jogo no Data Frame
