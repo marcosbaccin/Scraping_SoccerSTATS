@@ -31,10 +31,8 @@ tabela = driver.find_element(By.XPATH, '//*[@id="btable"]/tbody')
 ligas = tabela.find_elements(By.TAG_NAME, 'tr')
 print(len(ligas))
 qtd_ligas = 0
-media_gpg = 0
-media_mtog = 0
-media_mttg = 0
-media_totg = 0
+media_mtog = 0 #mtog (more than one goal)
+media_mttg = 0 #mttg (more than two goals)
 
 i = 1
 for l in ligas:
@@ -62,32 +60,10 @@ for l in ligas:
         except Exception as e:
             print(e.message)
 
-    try:
-        totg = driver.find_element(By.XPATH, f'//*[@id="btable"]/tbody/tr[{i}]/td[12]').get_attribute('innerHTML').replace('%', '')
-        
-        if totg != '&nbsp;-&nbsp;':
-            media_totg = media_totg + int(totg)
-
-    except Exception as e:
-        print(e.message)
-
-    try:
-        gpg = driver.find_element(By.XPATH, f'//*[@id="btable"]/tbody/tr[{i}]/td[7]/font').get_attribute('innerHTML').replace('%', '')
-        
-        if gpg != '&nbsp;-&nbsp;':
-            media_gpg = media_gpg + float(gpg)
-
-    except Exception as e:
-        print(e.message)
-
     i = i + 1
 
 media_mtog = media_mtog / qtd_ligas
 media_mttg = media_mttg / qtd_ligas
-media_totg = media_totg / qtd_ligas
-media_gpg = media_gpg / qtd_ligas
 
-print(f'Media +1.5 gols: {media_mtog}')
-print(f'Media +2.5 gols: {media_mttg}')
-print(f'Media +3.5 gols: {media_totg}')
-print(f'Media geral de gols por jogo: {media_gpg}')
+print(f'Frequência de +1.5 gols: {media_mtog:.2f}%')
+print(f'Frequência de +2.5 gols: {media_mttg:.2f}%')
