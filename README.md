@@ -1,3 +1,4 @@
-Projeto pessoal desenvolvido para colocar em prática as habilidades de Web Scraping aprendidas no curso https://www.youtube.com/playlist?list=PLc20sA5NNOvrsn3a78ewy2VTCXVV47NB4.
-O objetivo é coletar os dados da porcentagem de +0.5 gols no 1º tempo, +2.5 gols e ambas marcam de cada time, na condição de mandante e de visitante, de uma determinada liga (escolhida pelo usuário) no site SoccerSTATS.
-No final os dados coletados serão salvos em uma planilha excel.
+O objetivo principal desse projeto é encontrar jogos que tenham boa probabilidade de ocorrer +1.5 e/ou +2.5 gols utilizando os dados fornecidos no site https://www.soccerstats.com
+
+O arquivo medias.py tem como objetivo encontrar a frequência global em que ocorrem os eventos de +1.5 e +2.5 gols em partidas de diversas ligas pelo mundo.
+Para isso inicialmente ele acessa a página de ligas do SoccerSTATS como ilustra a imagem abaixo.
