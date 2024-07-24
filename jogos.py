@@ -341,7 +341,10 @@ for t in leagues:
                 # Pega os dados de data, hora, mandante e visitante da partida
                 try:
                     date.append(match.find_element(By.XPATH, f'/html/body/div[4]/div[2]/div[2]/div[7]/table[1]/tbody/tr[{i}]/td[1]/font').get_attribute('innerHTML'))
-                    hour.append(match.find_element(By.XPATH, f'/html/body/div[4]/div[2]/div[2]/div[7]/table[1]/tbody/tr[{i}]/td[3]/font').get_attribute('innerHTML'))
+                    try:
+                        hour.append(match.find_element(By.XPATH, f'/html/body/div[4]/div[2]/div[2]/div[7]/table[1]/tbody/tr[{i}]/td[3]/font').get_attribute('innerHTML'))
+                    except NoSuchElementException as e:
+                        hour.append(match.find_element(By.XPATH, f'/html/body/div[4]/div[2]/div[2]/div[7]/table[1]/tbody/tr[{i}]/td[3]').get_attribute('innerHTML'))
                     home.append(match.find_element(By.XPATH, f'/html/body/div[4]/div[2]/div[2]/div[7]/table[1]/tbody/tr[{i}]/td[2]').get_attribute('innerHTML').replace('&nbsp;', ''))
                     away.append(match.find_element(By.XPATH, f'/html/body/div[4]/div[2]/div[2]/div[7]/table[1]/tbody/tr[{i}]/td[4]').get_attribute('innerHTML').replace('&nbsp;', ''))
                 except NoSuchElementException as e:
