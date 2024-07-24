@@ -24,13 +24,13 @@ jogos = pd.DataFrame(columns=['League', 'Date', 'Hour', 'Home', 'Away', 'Type'])
 # Ligas disponíveis no Soccerstats
 leagues = ['australia', 'australia2', 'australia3', 'australia4', 'australia5', 'australia6', 'australia7', 'australia8', 'australia10', 
            'australia11', 'japan', 'japan2', 'japan3', 'japan4', 'japan5', 'southkorea', 'southkorea2', 'southkorea3', 'southkorea4',
-           'china', 'china2', 'china3', 'malaysia', 'malaysia2', 'newzealand', 'singapore', 'thailand', 'thailand2', 'hongkong',
-           'indonesia', 'vietnam', 'vietnam2', 'vietnam3','albania', 'algeria', 'algeria3', 'andorra', 'argentina', 'argentina3',
+           'china', 'china2', 'china3', 'malaysia', 'malaysia2', 'newzealand', 'philippines', 'singapore', 'thailand', 'thailand2', 'hongkong',
+           'indonesia', 'vietnam', 'vietnam2', 'vietnam3', 'albania', 'algeria', 'algeria3', 'andorra', 'argentina', 'argentina3',
            'argentina4', 'argentina5', 'argentina10', 'armenia', 'austria', 'austria2', 'austria6', 'austria7', 'austria8', 'azerbaijan',
            'bahrain', 'bangladesh', 'belarus', 'belarus2', 'belgium', 'belgium2', 'belgium3', 'belgium6', 'bolivia', 'bosnia',
            'bosnia2', 'brazil', 'brazil2', 'brazil3', 'brazil4', 'brazil5', 'brazil6', 'brazil7', 'brazil8', 'brazil9',
            'brazil11', 'brazil12', 'brazil14', 'brazil15', 'brazil16', 'brazil17', 'brazil18', 'brazil19', 'brazil20', 'brazil21',
-           'bulgaria', 'bulgaria2', 'canada', 'chile', 'chile2', 'chile3', 'colombia', 'colombia2', 'costarica', 'costarica2',
+           'bulgaria', 'bulgaria2', 'canada', 'chile', 'chile2', 'colombia', 'colombia2', 'costarica', 'costarica2',
            'croatia', 'croatia2', 'cyprus', 'cyprus2', 'czechrepublic', 'czechrepublic2', 'czechrepublic3', 'czechrepublic4', 'denmark', 'denmark2',
            'denmark3', 'ecuador', 'ecuador2', 'ecuador3', 'egypt', 'england', 'england2', 'england3', 'england4', 'england5',
            'england6', 'england7', 'england8', 'england9', 'england10', 'england11', 'england15', 'england17', 'england18', 'england19',
@@ -64,6 +64,12 @@ for t in leagues:
     
     # Criando o link da página de gols da liga (t)
     link = goals_link + t
+
+    mtog_teams_home = [] # mtog (more than one goal)
+    mtog_teams_away = []
+
+    mttg_teams_home = [] # mttg (more than two goals)
+    mttg_teams_away = []
 
     # Verifica se a resposta da requisição para o link fornecido é bem-sucedida (status code 200)
     if requests.get(link).status_code == 200:
@@ -110,13 +116,14 @@ for t in leagues:
                 
                 # Cria uma lista composta por cada linha da tabela de gols totais
                 total_goals_stats_teams = total_goals_stats.find_elements(By.CLASS_NAME, "odd")
+                # print(len(total_match_goals_stats_teams))
 
                 i = 1
                 for item in total_goals_stats_teams:
                     # Pega o nome do time
                     teams_total.append(item.find_element(By.TAG_NAME, "a").get_attribute("innerHTML"))
                     
-                    # Pega os dados de +1.5 e +2.5 gols totais do time
+                    # Pega os dados de +1.5, +2.5 e BTS totais do time
                     try:
                         more_one_goal_total.append(float(item.find_element(By.XPATH, f'/html/body/div[4]/div[2]/div[2]/div[4]/div[3]/div[1]/div[1]/table/tbody/tr[{i}]/td[5]').get_attribute("sorttable_customkey")))
                         more_two_goals_total.append(float(item.find_element(By.XPATH, f'/html/body/div[4]/div[2]/div[2]/div[4]/div[3]/div[1]/div[1]/table/tbody/tr[{i}]/td[6]').get_attribute("sorttable_customkey")))
@@ -151,7 +158,7 @@ for t in leagues:
                     # Pega o nome do time
                     teams_last8.append(item.find_element(By.TAG_NAME, "a").get_attribute("innerHTML"))
                     
-                    # Pega os dados de +1.5 e +2.5 gols dos últimos 8 jogos do time
+                    # Pega os dados de +1.5, +2.5 e BTS dos últimos 8 jogos do time
                     try:
                         more_one_goal_last8.append(float(item.find_element(By.XPATH, f'/html/body/div[4]/div[2]/div[2]/div[4]/div[3]/div[1]/div[2]/table/tbody/tr[{i}]/td[5]').get_attribute("sorttable_customkey")))
                         more_two_goals_last8.append(float(item.find_element(By.XPATH, f'/html/body/div[4]/div[2]/div[2]/div[4]/div[3]/div[1]/div[2]/table/tbody/tr[{i}]/td[6]').get_attribute("sorttable_customkey")))
@@ -186,7 +193,7 @@ for t in leagues:
                     # Pega o nome do time
                     teams_home.append(item.find_element(By.TAG_NAME, "a").get_attribute("innerHTML"))
                     
-                    # Pega os dados de +1.5 e +2.5 como mandante do time
+                    # Pega os dados de +1.5, +2.5 e BTS como mandante do time
                     try:
                         more_one_goal_home.append(float(item.find_element(By.XPATH, f'/html/body/div[4]/div[2]/div[2]/div[4]/div[3]/div[1]/div[3]/table/tbody/tr[{i}]/td[5]').get_attribute("sorttable_customkey")))
                         more_two_goals_home.append(float(item.find_element(By.XPATH, f'/html/body/div[4]/div[2]/div[2]/div[4]/div[3]/div[1]/div[3]/table/tbody/tr[{i}]/td[6]').get_attribute("sorttable_customkey")))
@@ -221,7 +228,7 @@ for t in leagues:
                     # Pega o nome do time
                     teams_away.append(item.find_element(By.TAG_NAME, "a").get_attribute("innerHTML"))
                     
-                    # Pega os dados de +1.5 e +2.5 como visitante do time
+                    # Pega os dados de +1.5, +2.5 e BTS como visitante do time
                     try:
                         more_one_goal_away.append(float(item.find_element(By.XPATH, f'/html/body/div[4]/div[2]/div[2]/div[4]/div[3]/div[1]/div[4]/table/tbody/tr[{i}]/td[5]').get_attribute("sorttable_customkey")))
                         more_two_goals_away.append(float(item.find_element(By.XPATH, f'/html/body/div[4]/div[2]/div[2]/div[4]/div[3]/div[1]/div[4]/table/tbody/tr[{i}]/td[6]').get_attribute("sorttable_customkey")))
@@ -256,7 +263,31 @@ for t in leagues:
                 df_total["+2.5 Last8"] = df_last8["+2.5 Last8"]
                 df_total["+2.5 Home"] = df_home["+2.5 Home"]
                 df_total["+2.5 Away"] = df_away["+2.5 Away"]
-                            
+
+                for i in df_total.index:
+                    
+                    # Verifica se o time está acima chance de +1.5 gols totais e dos últimos 8 jogos
+                    if df_total['+1.5 Total'][i] > 75 and df_total['+1.5 Last8'][i] > 75:
+                        
+                        # Verifica se o time está acima da chance de +1.5 gols como mandante
+                        if df_total['+1.5 Home'][i] > 75:
+                            mtog_teams_home.append(df_total['Teams'][i])
+                        
+                        # Verifica se o time está acima da chance de +1.5 gols como visitante
+                        if df_total['+1.5 Away'][i] > 75:
+                            mtog_teams_away.append(df_total['Teams'][i])
+
+                    # Verifica se o time está acima da chance de +2.5 gols totais e dos últimos 8 jogos
+                    if df_total['+2.5 Total'][i] > 53 and df_total['+2.5 Last8'][i] > 53:
+                        
+                        # Verifica se o time está acima da chance de +2.5 gols como mandante
+                        if df_total['+2.5 Home'][i] > 53:
+                            mttg_teams_home.append(df_total['Teams'][i])
+                        
+                        # Verifica se o time está acima da chance de +2.5 gols como visitante
+                        if df_total['+2.5 Away'][i] > 53:
+                            mttg_teams_away.append(df_total['Teams'][i])
+
         except:
             #print(f'{league_name} has a low number of games')
             pass
@@ -279,7 +310,8 @@ for t in leagues:
 
         # Fecha anúncios
         try:
-            driver.find_element(By.CSS_SELECTOR, '#dismiss-button > div > span').click()
+            #driver.find_element(By.CSS_SELECTOR, '#dismiss-button > div > span').click()
+            driver.find_element(By.CSS_SELECTOR, '#steady-adblock-overlay-container-close-icon').click()
         except:
             #print("")
             pass
@@ -325,31 +357,19 @@ for t in leagues:
 
             i = 0
             for d in date:
-                # Verifica se é o dia desejado
-                if d == 'Tu 28 May':
-                    # Localiza o index referentes aos times da partida no dataframe
-                    index_h = df_total.loc[df_total["Teams"] == home[i]].index[0]
-                    index_a = df_total.loc[df_total["Teams"] == away[i]].index[0]
-
-                    # Pega os dados referentes aos times
-                    values_h = df_total.loc[index_h]
-                    values_a = df_total.loc[index_a]
-
-                    # Calcula a chance de +1.5 e +2.5 ocorrer na partida entre as equipes
-                    chance_mtog = (values_h["+1.5 Total"] + values_h["+1.5 Last8"] + values_h["+1.5 Home"] + values_a["+1.5 Total"] + values_a["+1.5 Last8"] + values_a["+1.5 Away"]) / 6
-                    chance_mttg = (values_h["+2.5 Total"] + values_h["+2.5 Last8"] + values_h["+2.5 Home"] + values_a["+2.5 Total"] + values_a["+2.5 Last8"] + values_a["+2.5 Away"]) / 6
-
-                    if chance_mtog > 75:
-                        print(f'{league_name}, {d}, {hour[i]}, {home[i]} x {away[i]}, +1.5 gols')
+                # Verifica se no dia atual o mandante e o visitante estão entre os times acima das chances para +1.5 gols
+                if d == 'Mo 22 Jul' and home[i] in mtog_teams_home and away[i] in mtog_teams_away:
+                    print(f'{league_name}, {d}, {hour[i]}, {home[i]} x {away[i]}, +1.5 gols')
                     
-                        # Salva o jogo no Data Frame
-                        jogos.loc[len(jogos)] = [league_name, d, hour[i], home[i], away[i], '+1.5 gols']
+                    # Salva o jogo no Data Frame
+                    jogos.loc[len(jogos)] = [league_name, d, hour[i], home[i], away[i], '+1.5 gols']
 
-                    if chance_mttg > 52:
-                        print(f'{league_name}, {d}, {hour[i]}, {home[i]} x {away[i]}, +2.5 gols')
+                # Verifica se no dia atual o mandante e o visitante estão entre os times acima das chances para +2.5 gols
+                if d == 'Mo 22 Jul' and home[i] in mttg_teams_home and away[i] in mttg_teams_away:
+                    print(f'{league_name}, {d}, {hour[i]}, {home[i]} x {away[i]}, +2.5 gols')
                     
-                        # Salva o jogo no Data Frame
-                        jogos.loc[len(jogos)] = [league_name, d, hour[i], home[i], away[i], '+2.5 gols']
+                    # Salva o jogo no Data Frame
+                    jogos.loc[len(jogos)] = [league_name, d, hour[i], home[i], away[i], '+2.5 gols']
                 
                 i = i + 1
     
