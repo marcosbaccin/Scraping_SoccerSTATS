@@ -21,7 +21,14 @@ time.sleep(2)
 
 try:
     # Clicar em aceitar os cookies da página
+    
     driver.find_element(By.CSS_SELECTOR, "#qc-cmp2-ui > div.qc-cmp2-footer.qc-cmp2-footer-overlay.qc-cmp2-footer-scrolled > div > button.css-47sehv > span").click()
+except:
+    #print("")
+    pass
+
+try:
+    driver.find_element(By.CSS_SELECTOR, '#dismiss-button > div > span').click()
 except:
     #print("")
     pass
@@ -31,8 +38,8 @@ tabela = driver.find_element(By.XPATH, '//*[@id="btable"]/tbody')
 ligas = tabela.find_elements(By.TAG_NAME, 'tr')
 print(len(ligas))
 qtd_ligas = 0
-media_mtog = 0 #mtog (more than one goal)
-media_mttg = 0 #mttg (more than two goals)
+media_mtog = 0
+media_mttg = 0
 
 i = 1
 for l in ligas:
@@ -60,10 +67,13 @@ for l in ligas:
         except Exception as e:
             print(e.message)
 
+    except Exception as e:
+        print(e.message)
+
     i = i + 1
 
 media_mtog = media_mtog / qtd_ligas
 media_mttg = media_mttg / qtd_ligas
 
-print(f'Frequência de +1.5 gols: {media_mtog:.2f}%')
-print(f'Frequência de +2.5 gols: {media_mttg:.2f}%')
+print(f'Frequencia de +1.5 gols: {media_mtog:.2f}%')
+print(f'Frequencia de +2.5 gols: {media_mttg:.2f}%')
