@@ -29,11 +29,11 @@ Em seguida acessamos a página de Matches da liga. Pegaremos todos os registros 
   <img align="center" alt="Matches" height="250" width="500" src="https://github.com/marcosbaccin/soccerstats/blob/master/prints/05.png">
 </div><br>
 
-Com todos esses dados em mãos vamos calcular quais jogos que ocorerrão no dia X (por exemplo, We 29 May) tem boas chances de ocorrer +1.5 e/ou +2.5 gols e/ou Ambas Marcam.
+Com todos esses dados em mãos vamos calcular quais jogos que ocorerrão no dia X (por exemplo, Sa 4 Jan) tem boas chances de ocorrer +1.5 e/ou +2.5 gols e/ou Ambas Marcam.
 Para isso o algoritmo percorre a lista de jogos coletados na página de Matches e verifica quais ocorrem no dia X. Em seguida analisa os dados de gols das duas equipes envolvidas. Se ambas as equipes tem frequência de +1.5 e/ou +2.5 gols e/ou Ambas Marcam acima da média global (encontrada ao executar o arquivo ligas.py) em todos os cenários possíveis ( Total, Last 8, Home e Away) o algoritmo te informa que esse é um jogo em potencial. A imagem abaixo mostra um exemplo de saída do arquivo encontrando_jogos.py.
 
 <div style="display: inlineblock"><br>
   <img align="center" alt="Result" height="250" width="500" src="https://github.com/marcosbaccin/soccerstats/blob/master/prints/06.png">
 </div><br>
 
-Neste exemplo, foi analisado apenas a liga MLS para jogos no dia 29/05/2024 (We 29 May). Todos os jogos identificados como potencial são printados na saída e salvos em um arquivo csv.
+Neste exemplo, foi analisado os jogos no dia 04/01/2025 (Sa 4 Jan). Todos os jogos identificados como potencial são printados na saída e salvos em um arquivo csv.
