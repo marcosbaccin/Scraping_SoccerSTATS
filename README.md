@@ -8,7 +8,7 @@ Para isso inicialmente ele acessa a página de ligas do SoccerSTATS, em seguida 
   <img align="center" alt="Output_medias" height="200" width="400" src="https://github.com/marcosbaccin/soccerstats/blob/master/prints/02.png">
 </div><br>
 
-Como exemplo de saída vemos na imagem acima primeiramente o nº 346 que representa a quantidade de ligas analisadas. Logo abaixo temos as frequências de +1.5, +2.5 gols e Ambas Marcam.
+Como exemplo de saída vemos na imagem acima primeiramente um número que representa a quantidade de ligas analisadas. Logo abaixo temos as frequências de +1.5, +2.5 gols e Ambas Marcam.
 
 Já o arquivo encontrando_jogos.py vai realizar o scraping da frequência desses eventos para cada clube. Para isso acessamos a página de cada liga e lá navegaremos por dois menus, sendo eles os menus "Goals" e "Matches".
 O menu Goals apresenta os dados de gols de cada equipe da liga enquanto Matches as partidas que foram ou serão disputadas.
