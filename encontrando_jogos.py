@@ -22,15 +22,15 @@ matches_link = 'https://www.soccerstats.com/results.asp?league='
 jogos = pd.DataFrame(columns=['League', 'Date', 'Hour', 'Home', 'Away', 'Type', 'Odd'])
 
 # Dia atual
-day = 'Fr 3 Jan'
+day = 'Tu 29 Apr'
 
 # Ligas disponíveis no Soccerstats
-leagues = ['australia', 'albania',
-'algeria',
+leagues = ['brazil6', 'albania',
 'argentina',
 'argentina3',
 'argentina4',
 'argentina5',
+'argentina8',
 'argentina10',
 'armenia',
 'australia',
@@ -56,7 +56,6 @@ leagues = ['australia', 'albania',
 'belarus2',
 'belgium',
 'belgium2',
-'belgium3',
 'belgium6',
 'bolivia',
 'bolivia2',
@@ -91,6 +90,7 @@ leagues = ['australia', 'albania',
 'china3',
 'colombia',
 'colombia2',
+'colombia3',
 'costarica',
 'costarica2',
 'croatia',
@@ -105,7 +105,6 @@ leagues = ['australia', 'albania',
 'denmark2',
 'denmark3',
 'ecuador',
-'ecuador2',
 'ecuador3',
 'egypt',
 'england',
@@ -188,7 +187,6 @@ leagues = ['australia', 'albania',
 'india2',
 'indonesia',
 'iran',
-'iraq',
 'ireland',
 'ireland2',
 'ireland3',
@@ -231,15 +229,12 @@ leagues = ['australia', 'albania',
 'malaysia',
 'malta',
 'malta2',
-'mauritius',
 'mexico',
 'mexico2',
 'mexico3',
-'moldova',
-'mongolia',
+'mexico4',
 'montenegro',
 'morocco',
-'morocco2',
 'myanmar',
 'netherlands',
 'netherlands2',
@@ -264,7 +259,6 @@ leagues = ['australia', 'albania',
 'norway10',
 'norway11',
 'norway12',
-'oman',
 'panama',
 'panama2',
 'paraguay',
@@ -358,8 +352,8 @@ leagues = ['australia', 'albania',
 'turkey6',
 'turkey7',
 'turkey8',
+'turkey10',
 'uae',
-'uganda',
 'ukraine',
 'uruguay',
 'uruguay2',
@@ -367,7 +361,6 @@ leagues = ['australia', 'albania',
 'usa',
 'usa2',
 'usa3',
-'usa5',
 'usa6',
 'usa7',
 'uzbekistan',
@@ -377,14 +370,11 @@ leagues = ['australia', 'albania',
 'vietnam3',
 'wales',
 'zambia',
-'zimbabwe', 'australia',]
+'zimbabwe', 'brazil6',]
+
+teste = ['brazil6', 'brazil6',]
 
 """
-teste = ['brazil', 'spain', 'france', 'australia', 'australia2', 'bangladesh', 'cyprus', 'scotland2', 'ethiopia', 'france2',
-         'ghana', 'iraq', 'israel2', 'israel3', 'israel4', 'india', 'morocco', 'wales', 'portugal', 'turkey',
-         'turkey2', 'uganda', 'brazil',]
-
-
 leagues_mtog = []
 
 leagues_mttg = []
@@ -408,11 +398,6 @@ for t in leagues:
     #mttg_teams_last8 = {}
     mttg_teams_home = {} # mttg (more than two goals)
     mttg_teams_away = {}
-
-    #three_teams_total = {}
-    #three_teams_last8 = {}
-    three_teams_home = {} # more than three goals
-    three_teams_away = {}
 
     #bts_teams_total = {}
     #bts_teams_last8 = {}
@@ -449,92 +434,6 @@ for t in leagues:
 
         try:
             
-            # Pega a tabela onde se encontra os dados de gols no total
-            try:
-                total_goals_stats = driver.find_element(By.XPATH, '/html/body/div[4]/div[2]/div[2]/div[3]/div[3]/div[1]/div[1]/table')
-            except NoSuchElementException as e:
-                try:
-                    total_goals_stats = driver.find_element(By.XPATH, '/html/body/div[4]/div[2]/div[2]/div[3]/div[3]/div/div[1]/table')
-                except NoSuchElementException as e:
-                    total_goals_stats = driver.find_element(By.XPATH, '/html/body/div[4]/div/div[2]/div[4]/div[2]/div[1]/div[1]/table')
-
-            teams_total = []
-            more_one_goal_total = []
-            more_two_goals_total = []
-            #more_three_goals_total = []
-            bts_total = []
-            
-            # Cria uma lista composta por cada linha da tabela de gols como mandante
-            total_goals_stats_teams = total_goals_stats.find_elements(By.CLASS_NAME, "odd")
-
-            i = 1
-            for item in total_goals_stats_teams:
-                # Pega o nome do time
-                teams_total.append(item.find_element(By.TAG_NAME, "a").get_attribute("innerHTML"))
-                
-                # Pega os dados de +1.5, +2.5 e +3.5 gols como mandante do time
-                try:
-                    more_one_goal_total.append(float(item.find_element(By.XPATH, f'/html/body/div[4]/div[2]/div[2]/div[3]/div[3]/div[1]/div[1]/table/tbody/tr[{i}]/td[5]').get_attribute("sorttable_customkey")))
-                    more_two_goals_total.append(float(item.find_element(By.XPATH, f'/html/body/div[4]/div[2]/div[2]/div[3]/div[3]/div[1]/div[1]/table/tbody/tr[{i}]/td[6]').get_attribute("sorttable_customkey")))
-                    #more_three_goals_total.append(float(item.find_element(By.XPATH, f'/html/body/div[4]/div[2]/div[2]/div[3]/div[3]/div[1]/div[1]/table/tbody/tr[{i}]/td[7]').get_attribute("sorttable_customkey")))
-                    bts_total.append(float(item.find_element(By.XPATH, f'/html/body/div[4]/div[2]/div[2]/div[3]/div[3]/div[1]/div[1]/table/tbody/tr[{i}]/td[10]').get_attribute("sorttable_customkey")))
-                except NoSuchElementException as e:
-                    try:
-                        more_one_goal_total.append(float(item.find_element(By.XPATH, f'/html/body/div[4]/div[2]/div[2]/div[3]/div[3]/div/div[1]/table/tbody/tr[{i}]/td[5]').get_attribute("sorttable_customkey")))
-                        more_two_goals_total.append(float(item.find_element(By.XPATH, f'/html/body/div[4]/div[2]/div[2]/div[3]/div[3]/div/div[1]/table/tbody/tr[{i}]/td[6]').get_attribute("sorttable_customkey")))
-                        #more_three_goals_total.append(float(item.find_element(By.XPATH, f'/html/body/div[4]/div[2]/div[2]/div[3]/div[3]/div/div[1]/table/tbody/tr[{i}]/td[7]').get_attribute("sorttable_customkey")))
-                        bts_total.append(float(item.find_element(By.XPATH, f'/html/body/div[4]/div[2]/div[2]/div[3]/div[3]/div/div[1]/table/tbody/tr[{i}]/td[10]').get_attribute("sorttable_customkey")))
-                    except NoSuchElementException as e:
-                        more_one_goal_total.append(float(item.find_element(By.XPATH, f'/html/body/div[4]/div/div[2]/div[4]/div[2]/div[1]/div[1]/table/tbody/tr[{i}]/td[5]').get_attribute("sorttable_customkey")))
-                        more_two_goals_total.append(float(item.find_element(By.XPATH, f'/html/body/div[4]/div/div[2]/div[4]/div[2]/div[1]/div[1]/table/tbody/tr[{i}]/td[6]').get_attribute("sorttable_customkey")))
-                        #more_three_goals_total.append(float(item.find_element(By.XPATH, f'/html/body/div[4]/div[2]/div[2]/div[3]/div[3]/div[1]/div[1]/table/tbody/tr[{i}]/td[7]').get_attribute("sorttable_customkey")))
-                        bts_total.append(float(item.find_element(By.XPATH, f'/html/body/div[4]/div/div[2]/div[4]/div[2]/div[1]/div[1]/table/tbody/tr[{i}]/td[10]').get_attribute("sorttable_customkey")))
-
-                i = i + 1
-
-            # Pega a tabela onde se encontra os dados de gols nos últimos 8 jogos
-            try:
-                last8_goals_stats = driver.find_element(By.XPATH, '/html/body/div[4]/div[2]/div[2]/div[3]/div[3]/div[1]/div[2]/table')
-            except NoSuchElementException as e:
-                try:
-                    last8_goals_stats = driver.find_element(By.XPATH, '/html/body/div[4]/div[2]/div[2]/div[3]/div[3]/div/div[2]/table')
-                except NoSuchElementException as e:
-                    last8_goals_stats = driver.find_element(By.XPATH, '/html/body/div[4]/div/div[2]/div[4]/div[2]/div[1]/div[2]/table')
-
-            teams_last8 = []
-            more_one_goal_last8 = []
-            more_two_goals_last8 = []
-            #more_three_goals_last8 = []
-            bts_last8 = []
-            
-            # Cria uma lista composta por cada linha da tabela de gols como mandante
-            last8_goals_stats_teams = last8_goals_stats.find_elements(By.CLASS_NAME, "odd")
-
-            i = 1
-            for item in last8_goals_stats_teams:
-                # Pega o nome do time
-                teams_last8.append(item.find_element(By.TAG_NAME, "a").get_attribute("innerHTML"))
-                
-                # Pega os dados de +1.5, +2.5 e +3.5 gols como mandante do time
-                try:
-                    more_one_goal_last8.append(float(item.find_element(By.XPATH, f'/html/body/div[4]/div[2]/div[2]/div[3]/div[3]/div[1]/div[2]/table/tbody/tr[{i}]/td[5]').get_attribute("sorttable_customkey")))
-                    more_two_goals_last8.append(float(item.find_element(By.XPATH, f'/html/body/div[4]/div[2]/div[2]/div[3]/div[3]/div[1]/div[2]/table/tbody/tr[{i}]/td[6]').get_attribute("sorttable_customkey")))
-                    #more_three_goals_last8.append(float(item.find_element(By.XPATH, f'/html/body/div[4]/div[2]/div[2]/div[3]/div[3]/div[1]/div[2]/table/tbody/tr[{i}]/td[7]').get_attribute("sorttable_customkey")))
-                    bts_last8.append(float(item.find_element(By.XPATH, f'/html/body/div[4]/div[2]/div[2]/div[3]/div[3]/div[1]/div[2]/table/tbody/tr[{i}]/td[10]').get_attribute("sorttable_customkey")))
-                except NoSuchElementException as e:
-                    try:
-                        more_one_goal_last8.append(float(item.find_element(By.XPATH, f'/html/body/div[4]/div[2]/div[2]/div[3]/div[3]/div/div[2]/table/tbody/tr[{i}]/td[5]').get_attribute("sorttable_customkey")))
-                        more_two_goals_last8.append(float(item.find_element(By.XPATH, f'/html/body/div[4]/div[2]/div[2]/div[3]/div[3]/div/div[2]/table/tbody/tr[{i}]/td[6]').get_attribute("sorttable_customkey")))
-                        #more_three_goals_last8.append(float(item.find_element(By.XPATH, f'/html/body/div[4]/div[2]/div[2]/div[3]/div[3]/div/div[2]/table/tbody/tr[{i}]/td[7]').get_attribute("sorttable_customkey")))
-                        bts_last8.append(float(item.find_element(By.XPATH, f'/html/body/div[4]/div[2]/div[2]/div[3]/div[3]/div/div[2]/table/tbody/tr[{i}]/td[10]').get_attribute("sorttable_customkey")))
-                    except NoSuchElementException as e:
-                        more_one_goal_last8.append(float(item.find_element(By.XPATH, f'/html/body/div[4]/div/div[2]/div[4]/div[2]/div[1]/div[2]/table/tbody/tr[{i}]/td[5]').get_attribute("sorttable_customkey")))
-                        more_two_goals_last8.append(float(item.find_element(By.XPATH, f'/html/body/div[4]/div/div[2]/div[4]/div[2]/div[1]/div[2]/table/tbody/tr[{i}]/td[6]').get_attribute("sorttable_customkey")))
-                        #more_three_goals_last8.append(float(item.find_element(By.XPATH, f'/html/body/div[4]/div[2]/div[2]/div[3]/div[3]/div[1]/div[2]/table/tbody/tr[{i}]/td[7]').get_attribute("sorttable_customkey")))
-                        bts_last8.append(float(item.find_element(By.XPATH, f'/html/body/div[4]/div/div[2]/div[4]/div[2]/div[1]/div[2]/table/tbody/tr[{i}]/td[10]').get_attribute("sorttable_customkey")))
-
-                i = i + 1
-            
             # Pega a tabela onde se encontra os dados de gols como mandante
             try:
                 home_goals_stats = driver.find_element(By.XPATH, '/html/body/div[4]/div[2]/div[2]/div[3]/div[3]/div[1]/div[3]/table')
@@ -562,18 +461,15 @@ for t in leagues:
                 try:
                     more_one_goal_home.append(float(item.find_element(By.XPATH, f'/html/body/div[4]/div[2]/div[2]/div[3]/div[3]/div[1]/div[3]/table/tbody/tr[{i}]/td[5]').get_attribute("sorttable_customkey")))
                     more_two_goals_home.append(float(item.find_element(By.XPATH, f'/html/body/div[4]/div[2]/div[2]/div[3]/div[3]/div[1]/div[3]/table/tbody/tr[{i}]/td[6]').get_attribute("sorttable_customkey")))
-                    #more_three_goals_home.append(float(item.find_element(By.XPATH, f'/html/body/div[4]/div[2]/div[2]/div[3]/div[3]/div[1]/div[3]/table/tbody/tr[{i}]/td[7]').get_attribute("sorttable_customkey")))
                     bts_home.append(float(item.find_element(By.XPATH, f'/html/body/div[4]/div[2]/div[2]/div[3]/div[3]/div[1]/div[3]/table/tbody/tr[{i}]/td[10]').get_attribute("sorttable_customkey")))
                 except NoSuchElementException as e:
                     try:
                         more_one_goal_home.append(float(item.find_element(By.XPATH, f'/html/body/div[4]/div[2]/div[2]/div[3]/div[3]/div/div[3]/table/tbody/tr[{i}]/td[5]').get_attribute("sorttable_customkey")))
                         more_two_goals_home.append(float(item.find_element(By.XPATH, f'/html/body/div[4]/div[2]/div[2]/div[3]/div[3]/div/div[3]/table/tbody/tr[{i}]/td[6]').get_attribute("sorttable_customkey")))
-                        #more_three_goals_home.append(float(item.find_element(By.XPATH, f'/html/body/div[4]/div[2]/div[2]/div[3]/div[3]/div/div[3]/table/tbody/tr[{i}]/td[7]').get_attribute("sorttable_customkey")))
                         bts_home.append(float(item.find_element(By.XPATH, f'/html/body/div[4]/div[2]/div[2]/div[3]/div[3]/div/div[3]/table/tbody/tr[{i}]/td[10]').get_attribute("sorttable_customkey")))
                     except NoSuchElementException as e:
                         more_one_goal_home.append(float(item.find_element(By.XPATH, f'/html/body/div[4]/div/div[2]/div[4]/div[2]/div[1]/div[3]/table/tbody/tr[{i}]/td[5]').get_attribute("sorttable_customkey")))
                         more_two_goals_home.append(float(item.find_element(By.XPATH, f'/html/body/div[4]/div/div[2]/div[4]/div[2]/div[1]/div[3]/table/tbody/tr[{i}]/td[6]').get_attribute("sorttable_customkey")))
-                        #more_three_goals_home.append(float(item.find_element(By.XPATH, f'/html/body/div[4]/div[2]/div[2]/div[3]/div[3]/div[1]/div[3]/table/tbody/tr[{i}]/td[7]').get_attribute("sorttable_customkey")))
                         bts_home.append(float(item.find_element(By.XPATH, f'/html/body/div[4]/div/div[2]/div[4]/div[2]/div[1]/div[3]/table/tbody/tr[{i}]/td[10]').get_attribute("sorttable_customkey")))
 
                 i = i + 1
@@ -605,31 +501,20 @@ for t in leagues:
                 try:
                     more_one_goal_away.append(float(item.find_element(By.XPATH, f'/html/body/div[4]/div[2]/div[2]/div[3]/div[3]/div[1]/div[4]/table/tbody/tr[{i}]/td[5]').get_attribute("sorttable_customkey")))
                     more_two_goals_away.append(float(item.find_element(By.XPATH, f'/html/body/div[4]/div[2]/div[2]/div[3]/div[3]/div[1]/div[4]/table/tbody/tr[{i}]/td[6]').get_attribute("sorttable_customkey")))
-                    #more_three_goals_away.append(float(item.find_element(By.XPATH, f'/html/body/div[4]/div[2]/div[2]/div[3]/div[3]/div[1]/div[4]/table/tbody/tr[{i}]/td[7]').get_attribute("sorttable_customkey")))
                     bts_away.append(float(item.find_element(By.XPATH, f'/html/body/div[4]/div[2]/div[2]/div[3]/div[3]/div[1]/div[4]/table/tbody/tr[{i}]/td[10]').get_attribute("sorttable_customkey")))
                 except NoSuchElementException as e:
                     try:
                         more_one_goal_away.append(float(item.find_element(By.XPATH, f'/html/body/div[4]/div[2]/div[2]/div[3]/div[3]/div/div[4]/table/tbody/tr[{i}]/td[5]').get_attribute("sorttable_customkey")))
                         more_two_goals_away.append(float(item.find_element(By.XPATH, f'/html/body/div[4]/div[2]/div[2]/div[3]/div[3]/div/div[4]/table/tbody/tr[{i}]/td[6]').get_attribute("sorttable_customkey")))
-                        #more_three_goals_away.append(float(item.find_element(By.XPATH, f'/html/body/div[4]/div[2]/div[2]/div[3]/div[3]/div/div[4]/table/tbody/tr[{i}]/td[7]').get_attribute("sorttable_customkey")))
                         bts_away.append(float(item.find_element(By.XPATH, f'/html/body/div[4]/div[2]/div[2]/div[3]/div[3]/div/div[4]/table/tbody/tr[{i}]/td[10]').get_attribute("sorttable_customkey")))
                     except NoSuchElementException as e:
                         more_one_goal_away.append(float(item.find_element(By.XPATH, f'/html/body/div[4]/div/div[2]/div[4]/div[2]/div[1]/div[4]/table/tbody/tr[{i}]/td[5]').get_attribute("sorttable_customkey")))
                         more_two_goals_away.append(float(item.find_element(By.XPATH, f'/html/body/div[4]/div/div[2]/div[4]/div[2]/div[1]/div[4]/table/tbody/tr[{i}]/td[6]').get_attribute("sorttable_customkey")))
-                        #more_three_goals_away.append(float(item.find_element(By.XPATH, f'/html/body/div[4]/div[2]/div[2]/div[3]/div[3]/div[1]/div[4]/table/tbody/tr[{i}]/td[7]').get_attribute("sorttable_customkey")))
                         bts_away.append(float(item.find_element(By.XPATH, f'/html/body/div[4]/div/div[2]/div[4]/div[2]/div[1]/div[4]/table/tbody/tr[{i}]/td[10]').get_attribute("sorttable_customkey")))
 
                 i = i + 1
             
             # Salvando os dados em dataframes
-            df_total = pd.DataFrame({"Teams Total": teams_total, "+1.5 Total": more_one_goal_total,
-                                     "+2.5 Total": more_two_goals_total, "BTS Total": bts_total}, index=None)
-            df_total.sort_values(by="Teams Total", inplace=True, ignore_index=True)
-
-            df_last8 = pd.DataFrame({"Teams Last8": teams_last8, "+1.5 Last8": more_one_goal_last8,
-                                     "+2.5 Last8": more_two_goals_last8, "BTS Last8": bts_last8}, index=None)
-            df_last8.sort_values(by="Teams Last8", inplace=True, ignore_index=True)
-
             df_home = pd.DataFrame({"Teams Home": teams_home, "+1.5 Home": more_one_goal_home,
                                     "+2.5 Home": more_two_goals_home, "BTS Home": bts_home}, index=None)
             df_home.sort_values(by="Teams Home", inplace=True, ignore_index=True)
@@ -639,61 +524,38 @@ for t in leagues:
             df_away.sort_values(by="Teams Away", inplace=True, ignore_index=True)
 
             # Unindo as informações em um único dataframe
-            df_total["+1.5 Last8"] = df_last8["+1.5 Last8"]
-            df_total["+2.5 Last8"] = df_last8["+2.5 Last8"]
-            #df_total["+3.5 Last8"] = df_last8["+3.5 Last8"]
-            df_total["BTS Last8"] = df_last8["BTS Last8"]
-
-            df_total["+1.5 Home"] = df_home["+1.5 Home"]
-            df_total["+2.5 Home"] = df_home["+2.5 Home"]
-            #df_total["+3.5 Home"] = df_home["+3.5 Home"]
-            df_total["BTS Home"] = df_home["BTS Home"]
-            
-            df_total["+1.5 Away"] = df_away["+1.5 Away"]
-            df_total["+2.5 Away"] = df_away["+2.5 Away"]
-            #df_total["+3.5 Away"] = df_away["+3.5 Away"]
-            df_total["BTS Away"] = df_away["BTS Away"]
+            df_home["+1.5 Away"] = df_away["+1.5 Away"]
+            df_home["+2.5 Away"] = df_away["+2.5 Away"]
+            df_home["BTS Away"] = df_away["BTS Away"]
 
             #print(df_total)
 
-            for i in df_total.index:
+            for i in df_home.index:
                 
                 # Verifica se o time está acima da chance de +1.5 gols como mandante
-                if df_total['+1.5 Total'][i] > 74 and df_total['+1.5 Last8'][i] > 74:
-                    if df_total['+1.5 Home'][i] > 74:
-                        mtog_teams_home[df_total['Teams Total'][i]] = (df_total['+1.5 Total'][i] + df_total['+1.5 Last8'][i] + df_total['+1.5 Home'][i]) / 3
-                        #mtog_teams_home.append(df_total['Teams'][i])
-                    
-                    if df_total['+1.5 Away'][i] > 74:
-                        mtog_teams_away[df_total['Teams Total'][i]] = (df_total['+1.5 Total'][i] + df_total['+1.5 Last8'][i] + df_total['+1.5 Away'][i]) / 3
-                        #mtog_teams_away.append(df_total['Teams'][i])
+                if df_home['+1.5 Home'][i] > 74:
+                    mtog_teams_home[df_home['Teams Home'][i]] = df_home['+1.5 Home'][i]
+                    #mtog_teams_home.append(df_total['Teams'][i])
                 
-                if df_total['+2.5 Total'][i] > 52 and df_total['+2.5 Last8'][i] > 52:
-                    if df_total['+2.5 Home'][i] > 52:
-                        mttg_teams_home[df_total['Teams Total'][i]] = (df_total['+2.5 Total'][i] + df_total['+2.5 Last8'][i] + df_total['+2.5 Home'][i]) / 3
-                        #mttg_teams_home.append(df_total['Teams'][i])
-                    
-                    if df_total['+2.5 Away'][i] > 52:
-                        mttg_teams_away[df_total['Teams Total'][i]] = (df_total['+2.5 Total'][i] + df_total['+2.5 Last8'][i] + df_total['+2.5 Away'][i]) / 3
-                        #mttg_teams_away.append(df_total['Teams'][i])
-                """
-                if t in leagues_three and df_total['+3.5 Total'][i] > 31 and df_total['+3.5 Last8'][i] > 31:
-                    if df_total['+3.5 Home'][i] > 31:
-                        three_teams_home[df_total['Teams Total'][i]] = (df_total['+3.5 Total'][i] + df_total['+3.5 Last8'][i] + df_total['+3.5 Home'][i]) / 3
-                        #three_teams_home.append(df_total['Teams'][i])
-                    
-                    if df_total['+3.5 Away'][i] > 31:
-                        three_teams_away[df_total['Teams Total'][i]] = (df_total['+3.5 Total'][i] + df_total['+3.5 Last8'][i] + df_total['+3.5 Away'][i]) / 3
-                        #three_teams_away.append(df_total['Teams'][i])
-                """
-                if df_total['BTS Total'][i] > 51 and df_total['BTS Last8'][i] > 51:
-                    if df_total['BTS Home'][i] > 51:
-                        bts_teams_home[df_total['Teams Total'][i]] = (df_total['BTS Total'][i] + df_total['BTS Last8'][i] + df_total['BTS Home'][i]) / 3
-                        #bts_teams_home.append(df_total['Teams'][i])
-                    
-                    if df_total['BTS Away'][i] > 51:
-                        bts_teams_away[df_total['Teams Total'][i]] = (df_total['BTS Total'][i] + df_total['BTS Last8'][i] + df_total['BTS Away'][i]) / 3
-                        #bts_teams_away.append(df_total['Teams'][i])
+                if df_home['+1.5 Away'][i] > 74:
+                    mtog_teams_away[df_home['Teams Home'][i]] = df_home['+1.5 Away'][i]
+                    #mtog_teams_away.append(df_total['Teams'][i])
+                
+                if df_home['+2.5 Home'][i] > 51:
+                    mttg_teams_home[df_home['Teams Home'][i]] = df_home['+2.5 Home'][i]
+                    #mttg_teams_home.append(df_total['Teams'][i])
+                
+                if df_home['+2.5 Away'][i] > 51:
+                    mttg_teams_away[df_home['Teams Home'][i]] = df_home['+2.5 Away'][i]
+                    #mttg_teams_away.append(df_total['Teams'][i])
+                
+                if df_home['BTS Home'][i] > 51:
+                    bts_teams_home[df_home['Teams Home'][i]] = df_home['BTS Home'][i]
+                    #bts_teams_home.append(df_total['Teams'][i])
+                
+                if df_home['BTS Away'][i] > 51:
+                    bts_teams_away[df_home['Teams Home'][i]] = df_home['BTS Away'][i]
+                    #bts_teams_away.append(df_total['Teams'][i])
 
         except:
             #print(f'{league_name} has a low number of games')
@@ -786,15 +648,7 @@ for t in leagues:
                     
                     # Salva o jogo no Data Frame
                     jogos.loc[len(jogos)] = [league_name, d, hour[i], home[i], away[i], '+2.5 gols', f' -> {odd:.2f}']
-                """
-                # Verifica se no dia atual o mandante e o visitante estão entre os times acima das chances para +3.5 gols
-                if d == day and home[i] in three_teams_home and away[i] in three_teams_away:
-                    odd = 100 / ((three_teams_home.get(home[i]) + three_teams_away.get(away[i])) / 2)
-                    print(f'{league_name}, {d}, {hour[i]}, {home[i]} x {away[i]}, +3.5 gols, -> {odd:.2f}')
-                    
-                    # Salva o jogo no Data Frame
-                    jogos.loc[len(jogos)] = [league_name, d, hour[i], home[i], away[i], '+3.5 gols', f' -> {odd:.2f}']
-                """
+                
                 # Verifica se no dia atual o mandante e o visitante estão entre os times acima das chances para BTS
                 if d == day and home[i] in bts_teams_home and away[i] in bts_teams_away:
                     odd = 100 / ((bts_teams_home.get(home[i]) + bts_teams_away.get(away[i])) / 2)
